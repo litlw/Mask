@@ -2,8 +2,8 @@
 Servo myservo; //this is my servo
 
 
-const int led = 9;
-const int button = 7;
+const int led = 10;
+const int button = 4;
 int val=0; //placeholder
   int oldval=0; // outdated placeholder
 int x = 0; // this is the key component
@@ -55,7 +55,7 @@ val = digitalRead(button);
   if (timer == ret){
     timer = 0;
     pos = 0;
-    x = 0
+    x = 0;
   } else {}
  
   myservo.write(pos);
