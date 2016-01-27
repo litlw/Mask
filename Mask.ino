@@ -38,18 +38,21 @@ val = digitalRead(button);
   oldval = val;
   
   
-  if(x == 1 && timer < ret && timer > go ){
+  if(x == 1){
     timer ++;
-    delay(10);
-    pos = 100;
     digitalWrite(led, HIGH);
-  } else {
-  pos = 0;
-  digitalWrite(led, LOW);
-  }
+  } else {}
+
+  if(timer < ret && timer > go ){
+    
+  
+    pos = 100;
+    
+  } else {}
 
   if (timer == ret){
     timer = 0;
+    pos = 0;
   } else {}
  
   myservo.write(pos);
