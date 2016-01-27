@@ -1,16 +1,14 @@
 #include <Servo.h>
-Servo myservo; 
-// Pin 13 has an LED connected on most Arduino boards.
-// give it a name:
-const int led = 9;
+Servo myservo; //this is my servo
 
+
+const int led = 9;
 const int button = 7;
-int val=0;
-  int oldval=0;
-int status=0;
-int x = 0;
-int pos = 0;
-long time = 0;
+int val=0; //placeholder
+  int oldval=0; // outdated placeholder
+int x = 0; // this is the key component
+int pos = 0; //where the servo is
+long timer = 0; //keeping track of time
 const long ret = 300;
 const long go = 100;
 
@@ -22,11 +20,17 @@ void setup() {
   myservo.attach(5);
 }
 
-// the loop routine runs over and over again forever:
+
+
+/////////////-------------------------/////////////////////
+
+
+
+
 void loop() {
 val = digitalRead(button);
   
-  if((val == HIGH)&&(oldval == LOW)&&(time < ret)){
+  if((val == HIGH)&&(oldval == LOW)&&(timer < ret)){
     
     x = 1 - x;
   } else {}
@@ -34,8 +38,8 @@ val = digitalRead(button);
   oldval = val;
   
   
-  if(x == 1 && time > go ){
-    time ++;
+  if(x == 1 && timer < ret && timer > go ){
+    timer ++;
     delay(10);
     pos = 100;
     digitalWrite(led, HIGH);
@@ -43,6 +47,10 @@ val = digitalRead(button);
   pos = 0;
   digitalWrite(led, LOW);
   }
+
+  if (timer == ret){
+    timer = 0;
+  } else {}
  
   myservo.write(pos);
 
