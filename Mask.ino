@@ -40,7 +40,9 @@ val = digitalRead(button);
   
   if(x == 1){
     timer ++;
+   delay(10);
     digitalWrite(led, HIGH);
+    
   } else {}
 
   if(timer < ret && timer > go ){
