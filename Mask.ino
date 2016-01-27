@@ -55,6 +55,7 @@ val = digitalRead(button);
   if (timer == ret){
     timer = 0;
     pos = 0;
+    x = 0
   } else {}
  
   myservo.write(pos);
