@@ -10,7 +10,7 @@
 // inslude the SPI library:
 #include "SPI.h"
 //avr pgmspace library for storing the LUT in program flash instead of sram
-#include <avr/pgmspace.h>
+#include "avr/pgmspace.h"
 
 /**
  * \brief bitrate lookup table
@@ -22,7 +22,7 @@
  * \note PROGMEM macro forces to Flash space.
  * \warning This consums 190 bytes of flash
  */
-PROGMEM uint16_t bitrate_table[15][6] = {
+PROGMEM const uint16_t bitrate_table[15][6] = {
                  { 0,   0,  0,  0,  0,  0}, //0000
                  { 32, 32, 32, 32,  8,  8}, //0001
                  { 64, 48, 40, 48, 16, 16}, //0010
