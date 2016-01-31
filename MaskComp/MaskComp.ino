@@ -16,17 +16,19 @@ Servo myservo; //this is my servo
 
 const int led = 10;
 const int button = 4;
+const int servo = 2;
 int val = 0; //placeholder
-int oldval = 0; // delay placeholder
+int oldval = LOW; // delay placeholder
 int x = 0;
 // i'll use this placeholder later. this is the key component. the magic stuff.
 int pos = 0; //where the servo is
+int audio = 0;
 
 long timer = 0;
 //keeping track of time. not sure if ill use it.
-const long ret = 520;    //difference between ret and go is duration the mouth will be open
+const long ret = 310;    //difference between ret and go is duration the mouth will be open
 const long go = 100;
-const long talk = 160;
+const long talk = 300;
 
 
 byte result;
@@ -39,7 +41,7 @@ void setup() {
   // initialize the digital pin as an output.
   pinMode(led, OUTPUT);
   pinMode(button, INPUT);
-  myservo.attach(5);
+  myservo.attach(servo);
   Serial.begin(9600); // unsure why the serial is this high
   result = sd.begin(SD_SEL, SPI_HALF_SPEED);
   //tells the shield to boot up
@@ -58,39 +60,73 @@ void setup() {
 
 void loop() {
   val = digitalRead(button);
-
-  while (timer == 0) {
-    if ((val == HIGH) && (oldval == LOW)) {
-
-      x = 1 - x;
-    } else {}
-
+  if ((val == HIGH) && (oldval == LOW)) {
+    x = 1;
+    digitalWrite(led, LOW);
+    audio = 0;
   }
 
-  oldval = val;
+  if (x == 1) {
+    for (timer == 0; timer < ret; timer ++) {
+      delay(10);
+      if ((timer > go) && (timer < ret)) {
+        audio = 1;
+        if (audio == 1) {
+          result = MP3player.playTrack(1);
+          delay (220);
+          digitalWrite(led, HIGH);
+          x = 0;
+          
+        }
+       if (timer == talk) {
+            pos = 100;
+            delay (30);
+            audio = 0;
+          }
+      }else {
+          //pos = 0;
+        }
+      }
+      } else {}
+      if (timer == ret) {
+        MP3player.stopTrack();
+        x = 0;
+        val = LOW;
+        pos = 0;
+        timer = 0;
+      }
+      myservo.write(pos);
+    oldval = val;
+    
+    }
 
 
-  if ((timer < ret) && (x == 1)) {
+  //oldval = val;
+  /*
+
+
+    if ((timer < ret) && (x == 1)) {
     timer ++;
     delay(10);
     if (timer > go) {
-      result = MP3player.playTrack(1);
-      digitalWrite(led, HIGH);
-      pos = 0;
+    result = MP3player.playTrack(1);
+    digitalWrite(led, HIGH);
+    pos = 0;
     } else if ((timer > go) && (timer > talk)) {
 
-      pos = 100;
+    pos = 100;
     } else {
-      pos = 0;
+    pos = 0;
     }
-  } else if ((timer >= ret) && (x == 1)) {
+    } else {}
+
+    if ((timer >= ret) && (x == 1)) {
     timer = 0;
     x = 0;
     MP3player.stopTrack();
     digitalWrite (led, LOW);
     }
 
+    myservo.write(pos);  // must be at the end
+  */
 
-  myservo.write(pos);  // must be at the end
-
-}
