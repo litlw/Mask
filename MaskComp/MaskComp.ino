@@ -14,10 +14,8 @@ SdFile file;
 
 Servo myservo; //this is my servo
 
-const int led = 10; // these are gonna light up the box
-const int led2 = 3; // this will be the "eyes" of the thing
 const int button = 4; // the obvious button
-const int servo = 2; // rotates the head. 
+const int servo = 5; // rotates the head. 
 int val = 0; //placeholder
 int x = 0; //program start
 int audiostart = 0; //start sound
@@ -27,9 +25,9 @@ int pos = 0; //where the servo is
 
 
 long timer = 0;//keeping track of time. not sure if ill use it.
-const long ret = 310;    //difference between ret and go is duration the mouth will be open
+const long ret = 105;    //difference between ret and go is duration the mouth will be open
 const long go = 100;
-const long talk = 300;
+const long talk = 90;
 
 
 byte result;
@@ -40,8 +38,6 @@ byte temp;
 // the setup routine runs once when you press reset:
 void setup() {
   // initialize the digital pin as an output.
-  pinMode(led, OUTPUT);
-  pinMode(led2, OUTPUT);
   pinMode(button, INPUT);
   result = sd.begin(SD_SEL, SPI_HALF_SPEED);
    result = MP3player.begin();
@@ -63,17 +59,20 @@ void setup() {
 
 void loop() {
   val = digitalRead(button);
+  pos = 0;
   
  if (timer == ret) {
     x = 0;
     timer = 0;
     pos = 0;
+    myservo.write(pos);
  }
-  if ((val == HIGH) && (timer == 0)) {
+  if ((val == HIGH)) {
     x = 1;
   }
   
-  myservo.write(pos);
+  
+  Serial.println(timer);
 
   
 
@@ -84,18 +83,22 @@ void loop() {
 
   //I have seperated the start times of the audio and the machine. I was having problems with the two processes running at the same time.
 
+if (timer < talk){
+  pos = 1;
+}
+
   if (timer > go)  { //I took out the second half of the IF statement, since i solved it earlier in the program. 
    // audiostart = 1; // the audio will start if this is true.
-   analogWrite(led2, 100);
          result = MP3player.playTrack(1);
-          delay (40);
-          MP3player.stopTrack();
+          delay (340);
+          //MP3player.stopTrack();
   }
 
 
   if (timer > talk) { //makes the program wait some time before the button makes the mouth move. worth noting, the numbers are different for a reason.
    // servostart = 1; // the mouth will move open
-      pos = 100;
+      pos = 40;
+      myservo.write(pos);
     } else {}
 }
 
