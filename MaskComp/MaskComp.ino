@@ -25,9 +25,9 @@ int pos = 0; //where the servo is
 
 
 long timer = 0;//keeping track of time. not sure if ill use it.
-const long ret = 105;    //difference between ret and go is duration the mouth will be open
-const long go = 100;
-const long talk = 90;
+const long ret = 605;    //difference between ret and go is duration the mouth will be open
+const long go = 600;
+const long talk = 590;
 
 
 byte result;
@@ -41,6 +41,7 @@ void setup() {
   pinMode(button, INPUT);
   result = sd.begin(SD_SEL, SPI_HALF_SPEED);
    result = MP3player.begin();
+  MP3player.setVolume(5,5);
   myservo.attach(servo);
   Serial.begin(9600); // unsure why the serial is this high
   //tells the shield to boot up
